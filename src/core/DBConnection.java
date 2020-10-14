@@ -1,4 +1,4 @@
-package db;
+package core;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,7 +21,7 @@ public class DBConnection {
 	private final static int portNumber = 3306;
 
 	/** The name of the database we are testing with (this default is installed with MySQL) */
-	private final static String dbName = "test";
+	private final static String dbName = "football";
 	
 	
 	private static Connection connection = null;
