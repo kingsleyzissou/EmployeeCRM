@@ -1,11 +1,12 @@
 package core;
 
 import java.util.ArrayList;
-
 import javax.swing.JList;
 import javax.swing.JPanel;
 
 public class PlayerIndex extends JPanel {
+	
+	private static final long serialVersionUID = 1L;
 	
 	JList<Player> list;
 	View view;
@@ -17,12 +18,13 @@ public class PlayerIndex extends JPanel {
 		view.addSection(list);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void update(ArrayList<Player> players) {
 		list = new JList(players.toArray());
 	}
 	
 	public void showListener() {
-		Player s = (Player) list.getSelectedValue();
+		Player s = list.getSelectedValue();
 		view.setSelection(s);
 	}
 	

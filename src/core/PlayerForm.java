@@ -2,15 +2,14 @@ package core;
 
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class PlayerForm extends JPanel {
+	
+	private static final long serialVersionUID = 1L;
 	
 	private Controller controller;
 	private Player selection;
