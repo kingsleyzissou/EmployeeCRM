@@ -1,16 +1,19 @@
-package core;
+ackage controllers;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import models.Model;
+import models.Player;
+import views.View;
+
 public class Controller {
 	
 	private Model model;
-	private View view;
 	
 	public Controller() {
 		model = new Model();
-		view = new View(this.index(), this);
+		new View(this.index(), this);
 	}
 	
 	public ArrayList<Player> index() {
@@ -25,7 +28,6 @@ public class Controller {
 	public boolean create(Player p) {
 		try {
 			model.create(p);
-			view.updateList(this.index());
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -36,7 +38,6 @@ public class Controller {
 	public  boolean update(Player p) {
 		try {
 			model.update(p);
-			view.updateList(this.index());
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -47,7 +48,6 @@ public class Controller {
 	public boolean delete(Player p) {
 		try {
 			model.delete(p);
-			view.updateList(this.index());
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -1,4 +1,4 @@
-package core;
+package models;
 
 public class Player {
 	
@@ -9,7 +9,7 @@ public class Player {
 	public String position;
 	public String country;
 	public String team;
-	protected String dob;
+	public String dob;
 	
 	public Player(
 			int id,

@@ -1,4 +1,4 @@
-package core;
+package views;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -10,6 +10,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
+
+import controllers.Controller;
+import models.Player;
 
 public class View extends JFrame {
 
@@ -41,6 +44,10 @@ public class View extends JFrame {
 	
 	public void addSection(JComponent component) {
 		panel.add(component);
+	}
+	
+	public void clearSelection() {
+		list.clearSelection();
 	}
 	
 	public void updateList(ArrayList<Player> players) {

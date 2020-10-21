@@ -1,17 +1,23 @@
-package core;
+package views;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import controllers.Controller;
+import models.Player;
 
 public class PlayerForm extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private Controller controller;
+	private View view;
 	private Player selection;
 	
 	private JTextField name = new JTextField();
@@ -27,6 +33,7 @@ public class PlayerForm extends JPanel {
 	
 	public PlayerForm(View view, Controller controller) {
 		this.controller = controller;
+		this.view = view;
 		
 		JPanel subPanel = new JPanel();
 		subPanel.setLayout(new GridLayout(10, 1));
@@ -76,11 +83,11 @@ public class PlayerForm extends JPanel {
 	
 	public void setSelection(Player selection) {
 		this.selection = selection;
-		this.setFormFields();
+		if (selection != null) this.setFormFields();
 	}
 	
 	public void setFormFields() {
-		name.setText(this.selection.name);
+		name.setText(selection.name);
 		lastname.setText(selection.lastname);
 		jersey.setText("" + selection.jersey);
 		country.setText(selection.country);
@@ -91,13 +98,20 @@ public class PlayerForm extends JPanel {
 	
 	public void clearForm() {
 		this.selection = null;
-		name.setText("");
-		lastname.setText("");
-		jersey.setText("");
-		country.setText("");
-		position.setText("");
-		team.setText("");
-		dob.setText("");
+		this.view.clearSelection();
+		name.setText(null);
+		lastname.setText(null);
+		jersey.setText(null);
+		country.setText(null);
+		position.setText(null);
+		team.setText(null);
+		dob.setText(null);
+	}
+	
+	public void refresh() {
+		this.clearForm();
+		ArrayList<Player> players = controller.index();
+		this.view.updateList(players);
 	}
 	
 	public boolean validateForm() {
@@ -131,8 +145,8 @@ public class PlayerForm extends JPanel {
 			return;
 		}
 		Player p = this.playerFromFields();
-		boolean result = controller.create(p);
-		if (result) this.clearForm();
+		controller.create(p);
+		this.refresh();
 	}
 	
 	public void updateListener() {
@@ -141,8 +155,8 @@ public class PlayerForm extends JPanel {
 			return;
 		}
 		Player p = this.playerFromFields();
-		boolean result = controller.update(p);
-		if (result) this.clearForm();
+		controller.update(p);
+		this.refresh();
 	}
 	
 	private void deleteListener() {
@@ -150,8 +164,8 @@ public class PlayerForm extends JPanel {
 			System.out.println("Please select a player before trying to delete");
 			return;
 		}
-		boolean result = controller.delete(selection);
-		if (result) this.clearForm();
+		controller.delete(selection);
+		this.refresh();
 	}
 
 }
