@@ -4,6 +4,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class Main {
 	
@@ -27,30 +32,40 @@ public class Main {
 		
 		Model model = new Model(conn);
 		
-//		try {
-//			ResultSet set = model.index();
+		
+		
+		
+		
+		try {
+			new View(model.all(), model);
+			// It creates and displays the table
+//		    JTable table = new JTable(buildTableModel(set));
+
+		    // Closes the Connection
+
+//		    JOptionPane.showMessageDialog(null, new JScrollPane(table));
 //			while (set.next()) {
 //				System.out.println(set.getString("firstname"));
 //				System.out.println(set.getString("lastname"));
 //				System.out.println(set.getString("team"));
 //			}
-//			
-//		} catch (SQLException e) {
-//			System.out.println("Could not execute query");
-//			e.printStackTrace();
-//		}
-		
-		try {
-			ResultSet set = model.show("2");
-			if (set.next()) {
-				System.out.println(set.getString("firstname"));
-				System.out.println(set.getString("lastname"));
-				System.out.println(set.getString("team"));
-			}
+			
 		} catch (SQLException e) {
 			System.out.println("Could not execute query");
 			e.printStackTrace();
 		}
+		
+//		try {
+//			ResultSet set = model.show("2");
+//			if (set.next()) {
+//				System.out.println(set.getString("firstname"));
+//				System.out.println(set.getString("lastname"));
+//				System.out.println(set.getString("team"));
+//			}
+//		} catch (SQLException e) {
+//			System.out.println("Could not execute query");
+//			e.printStackTrace();
+//		}
 		
 	}
 }
