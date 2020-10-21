@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -15,15 +16,16 @@ public class View extends JFrame {
 
 //	private static final long serialVersionUID = 1L;
 	
+	protected JPanel panel;
 	protected PlayerIndex list;
 	protected PlayerForm subPanel;
 
-	public View(ArrayList<Player> players, Model model) {		
-		JPanel panel = new JPanel();
+	public View(ArrayList<Player> players, Controller controller) {		
+		panel = new JPanel();
 		panel.setLayout(new GridLayout(3, 1));
 
-		list = new PlayerIndex(panel, players);
-		subPanel = new PlayerForm(panel, model);
+		list = new PlayerIndex(this, controller);
+		subPanel = new PlayerForm(this, controller);
 
 		int v = ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
 		int h = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED;
@@ -35,6 +37,18 @@ public class View extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
 		setVisible(true);
+	}
+	
+	public void addSection(JComponent component) {
+		panel.add(component);
+	}
+	
+	public void updateList(ArrayList<Player> players) {
+		list.update(players);
+	}
+	
+	public void setSelection(Player selection) {
+		subPanel.setSelection(selection);
 	}
 
 

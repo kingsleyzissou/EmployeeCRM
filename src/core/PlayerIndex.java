@@ -8,18 +8,24 @@ import javax.swing.JPanel;
 public class PlayerIndex extends JPanel {
 	
 	JList<Player> list;
-	JPanel panel;
+	View view;
 	
-	public PlayerIndex(JPanel panel, ArrayList<Player> players) {
-		list = new JList<Player>((Player[]) players.toArray());
+	public PlayerIndex(View view, Controller controller) {
+		this.view = view;
+		this.update(controller.index());
 		list.addListSelectionListener(e -> this.showListener());
-		panel.add(list);
+		view.addSection(list);
+	}
+	
+	public void update(ArrayList<Player> players) {
+		list = new JList(players.toArray());
 	}
 	
 	public void showListener() {
-		Player s = list.getSelectedValue();
-//		panel.setSelection(s);
-//		((PlayerForm) subPanel).setSelection(s);
+		Player s = (Player) list.getSelectedValue();
+		view.setSelection(s);
 	}
+	
+	
 
 }
