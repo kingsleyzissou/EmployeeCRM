@@ -11,11 +11,15 @@ public class Model {
 	
 	private Connection connection = null;
 	
-	private String tablename = null;
-	
-	public Model(Connection connection) {
-		this.connection = connection;
-//		this.tablename = tablename;
+	public Model() {
+		try {
+			this.connection = DBConnection.getConnection();
+			System.out.println("Connected to database");
+		} catch (SQLException e) {
+			System.out.println("ERROR: Could not connect to the database");
+			e.printStackTrace();
+			return;
+		}
 	}
 
 	public ArrayList<Player> all() throws SQLException {
@@ -59,27 +63,19 @@ public class Model {
 		return null;
 	}
 	
-	public void create(
-		String firstname, 
-		String lastname, 
-		int jersey,
-		String nationality,
-		String position,
-		String team,
-		String dob
-	) throws SQLException {
+	public void create(Player p) throws SQLException {
 		String sql = "INSERT INTO players ("
 				+ "firstname, lastname, jersey,"
 				+ "nationality, position, team, dob"
 				+ ") VALUES (?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement stmt = this.connection.prepareStatement(sql);
-		stmt.setString(1, firstname);
-		stmt.setString(2, lastname);
-		stmt.setInt(3, jersey);
-		stmt.setString(4, nationality);
-		stmt.setString(5, position);
-		stmt.setString(6, team);
-		stmt.setString(7, dob);
+		stmt.setString(1, p.name);
+		stmt.setString(2, p.lastname);
+		stmt.setInt(3, p.jersey);
+		stmt.setString(4, p.country);
+		stmt.setString(5, p.position);
+		stmt.setString(6, p.team);
+		stmt.setString(7, p.dob);
 		stmt.executeUpdate();
 	}
 	
@@ -93,8 +89,6 @@ public class Model {
 				+ "team=?, "
 				+ "dob=? "
 				+ "WHERE id=?";
-//		System.out.println(sql);
-//		System.out.println(p.id);
 		PreparedStatement stmt = this.connection.prepareStatement(sql);
 		stmt.setString(1, p.name);
 		stmt.setString(2, p.lastname);

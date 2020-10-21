@@ -2,9 +2,6 @@ package core;
 
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,7 +9,9 @@ import javax.swing.JTextField;
 
 public class PlayerForm extends JPanel {
 	
-	private Model model;
+	private static final long serialVersionUID = 1L;
+	
+	private Controller controller;
 	private Player selection;
 	
 	private JTextField name = new JTextField();
@@ -26,7 +25,9 @@ public class PlayerForm extends JPanel {
 	private JButton update = new JButton();
 	private JButton delete = new JButton();
 	
-	public PlayerForm(JPanel panel, Model model) {
+	public PlayerForm(View view, Controller controller) {
+		this.controller = controller;
+		
 		JPanel subPanel = new JPanel();
 		subPanel.setLayout(new GridLayout(10, 1));
 		subPanel.setBackground(Color.WHITE);
@@ -52,7 +53,7 @@ public class PlayerForm extends JPanel {
 		subPanel.add(new JLabel("Player number"));
 		subPanel.add(jersey);
 		
-		panel.add(subPanel);
+		view.addSection(subPanel);
 		
 		JPanel actionRow = new JPanel();
 		actionRow.setLayout(new GridLayout(1, 3));
@@ -66,7 +67,7 @@ public class PlayerForm extends JPanel {
 		actionRow.add(delete);
 		delete.setText("Delete");
 		
-//		panel.add(actionRow);
+		view.addSection(actionRow);
 		
 		create.addActionListener(e -> this.createListener());
 		update.addActionListener(e -> this.updateListener());
@@ -99,55 +100,58 @@ public class PlayerForm extends JPanel {
 		dob.setText("");
 	}
 	
+	public boolean validateForm() {
+		if (name.getText() == null) return false;
+		if (lastname.getText() == null) return false;
+		if (jersey.getText() == null) return false;
+		if (position.getText() == null) return false;
+		if (country.getText() == null) return false;
+		if (team.getText() == null) return false;
+		if (dob.getText() == null) return false;
+		return true;
+	}
+	
+	public Player playerFromFields() {
+		int id = selection != null ? selection.id : -1;
+		return new Player(
+				id,
+				name.getText(),
+				lastname.getText(),
+				Integer.parseInt(jersey.getText()),
+				position.getText(),
+				country.getText(),
+				team.getText(),
+				dob.getText()
+		);
+	}
+	
 	public void createListener() {
-		if (selection != null) {
-			System.out.println("Can't do that");
+		if (selection != null || !this.validateForm()) {
+			System.out.println("Please check your fields and try again");
 			return;
 		}
-		System.out.println("I got clicked");
-		try {
-			System.out.println(name.getText());
-			System.out.println(lastname.getText());
-			System.out.println(country.getText());
-			System.out.println(position.getText());
-			System.out.println(Integer.parseInt(jersey.getText()));
-			System.out.println(dob.getText());
-			System.out.println(team.getText());
-//			model.create(name.getText(), lastname.getText(), Integer.parseInt(jersey.getText()),
-//					country.getText(), position.getText(), team.getText(), dob.getText());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+		Player p = this.playerFromFields();
+		boolean result = controller.create(p);
+		if (result) this.clearForm();
 	}
 	
 	public void updateListener() {
-		if (selection == null) {
-			System.out.println("Can't do that");
+		if (selection == null || !this.validateForm()) {
+			System.out.println("Please check your fields and try again");
 			return;
 		}
-		System.out.println("I got clicked");
-		try {
-			Player player = new Player(selection.id, name.getText(), lastname.getText(),
-					Integer.parseInt(jersey.getText()), country.getText(), position.getText(), team.getText(),
-					dob.getText());
-			model.update(player);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		Player p = this.playerFromFields();
+		boolean result = controller.update(p);
+		if (result) this.clearForm();
 	}
 	
 	private void deleteListener() {
 		if (selection == null) {
-			System.out.println("Can't do that");
+			System.out.println("Please select a player before trying to delete");
 			return;
 		}
-		System.out.println("I got clicked");
-		try {
-			model.delete(selection);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		boolean result = controller.delete(selection);
+		if (result) this.clearForm();
 	}
 
 }

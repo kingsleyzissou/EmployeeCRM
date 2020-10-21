@@ -1,25 +1,33 @@
 package core;
 
 import java.util.ArrayList;
-
 import javax.swing.JList;
 import javax.swing.JPanel;
 
 public class PlayerIndex extends JPanel {
 	
-	JList<Player> list;
-	JPanel panel;
+	private static final long serialVersionUID = 1L;
 	
-	public PlayerIndex(JPanel panel, ArrayList<Player> players) {
-		list = new JList<Player>((Player[]) players.toArray());
+	JList<Player> list;
+	View view;
+	
+	public PlayerIndex(View view, Controller controller) {
+		this.view = view;
+		this.update(controller.index());
 		list.addListSelectionListener(e -> this.showListener());
-		panel.add(list);
+		view.addSection(list);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void update(ArrayList<Player> players) {
+		list = new JList(players.toArray());
 	}
 	
 	public void showListener() {
 		Player s = list.getSelectedValue();
-//		panel.setSelection(s);
-//		((PlayerForm) subPanel).setSelection(s);
+		view.setSelection(s);
 	}
+	
+	
 
 }

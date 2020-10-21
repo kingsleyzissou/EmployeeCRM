@@ -1,7 +1,5 @@
 package core;
 
-import java.sql.Connection;
-
 public class Player {
 	
 	public int id;
