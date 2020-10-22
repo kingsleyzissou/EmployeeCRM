@@ -1,4 +1,4 @@
-package core;
+package models;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import core.DBConnection;
 
 public class Model {
 	
