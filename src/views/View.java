@@ -1,15 +1,15 @@
 package views;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.ArrayList;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 import controllers.Controller;
 import models.Player;
@@ -23,29 +23,42 @@ public class View extends JFrame {
 	protected PlayerIndex list;
 	protected PlayerForm subPanel;
 
-	public View(Controller controller) {		
-		panel = new JPanel();
-		panel.setLayout(new GridLayout(3, 1));
-
-		list = new PlayerIndex(this, controller);
-		subPanel = new PlayerForm(this, controller);
-
-		int v = ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
-		int h = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED;
-
-		JScrollPane scrollPane = new JScrollPane(panel, v, h);
-		scrollPane.setBorder(new EmptyBorder(20, 20, 20, 20));
+	public View(Controller controller) {	
 		
-		setSize(600, 400);
+		panel = new JPanel();
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1;
+        
+		list = new PlayerIndex(this, controller);
+		list.setBorder(new CompoundBorder(
+				new TitledBorder("Player list"),
+				new EmptyBorder(4, 4, 4, 4)
+		));
+		
+		panel.add(list, gbc);
+		
+		subPanel = new PlayerForm(this, controller);
+		subPanel.setBorder(new CompoundBorder(
+				new TitledBorder("Player details"),
+				new EmptyBorder(4, 4, 4, 4)
+		));
+		
+		gbc.gridx = 0;
+        gbc.gridy = 1;
+		panel.add(subPanel, gbc);
+
+		setTitle("Football Player CRM");
+		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		getContentPane().add(scrollPane, BorderLayout.CENTER);
+		getContentPane().add(panel, BorderLayout.CENTER);
+		pack();
 		setVisible(true);
 	}
-	
-	public void addSection(JComponent component) {
-		panel.add(component);
-	}
-	
+
 	public void clearSelection() {
 		list.clearSelection();
 	}

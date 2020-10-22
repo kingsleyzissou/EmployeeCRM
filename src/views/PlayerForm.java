@@ -1,10 +1,11 @@
 package views;
 
-import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -20,65 +21,72 @@ public class PlayerForm extends JPanel {
 	private View view;
 	private Player selection;
 	
-	private JTextField name = new JTextField();
-	private JTextField lastname = new JTextField();
-	private JTextField jersey = new JTextField();
-	private JTextField team = new JTextField();
-	private JTextField country = new JTextField();
-	private JTextField dob = new JTextField();
-	private JTextField position = new JTextField();
-	private JButton create = new JButton();
-	private JButton update = new JButton();
-	private JButton delete = new JButton();
+	private JPanel panel =  new JPanel();
+	private JTextField name = new JTextField(10);
+	private JTextField lastname = new JTextField(10);
+	private JTextField jersey = new JTextField(10);
+	private JTextField team = new JTextField(10);
+	private JTextField country = new JTextField(10);
+	private JTextField dob = new JTextField(10);
+	private JTextField position = new JTextField(10);
+	private JButton create = new JButton("Add");
+	private JButton update = new JButton("Edit");
+	private JButton delete = new JButton("Delete");
+	
+	private GridBagConstraints gbc = new GridBagConstraints();
 	
 	public PlayerForm(View view, Controller controller) {
 		this.controller = controller;
 		this.view = view;
+		this.createFormFields(panel);
+		this.createButtons(panel);
+	}
+	
+	public void createFormFields(JPanel panel) {
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1;
+        
+        panel.setLayout(new GridBagLayout());
+        
+		addComponent(new JLabel("Player name:"), 0, 0);
+		addComponent(name, 0, 1);
 		
-		JPanel subPanel = new JPanel();
-		subPanel.setLayout(new GridLayout(10, 1));
-		subPanel.setBackground(Color.WHITE);
-
-		subPanel.add(new JLabel("Player name:"));
-		subPanel.add(name);
-
-		subPanel.add(new JLabel("Player lastname"));
-		subPanel.add(lastname);
-
-		subPanel.add(new JLabel("Player team"));
-		subPanel.add(team);
-
-		subPanel.add(new JLabel("Player position"));
-		subPanel.add(position);
-
-		subPanel.add(new JLabel("Player country"));
-		subPanel.add(country);
-
-		subPanel.add(new JLabel("Player dob"));
-		subPanel.add(dob);
-
-		subPanel.add(new JLabel("Player number"));
-		subPanel.add(jersey);
+		addComponent(new JLabel("Player lastname:"), 1, 0);
+		addComponent(lastname, 1, 1);
 		
-		view.addSection(subPanel);
+		addComponent(new JLabel("Player team:"), 2, 0);
+		addComponent(team, 2, 1);
 		
-		JPanel actionRow = new JPanel();
-		actionRow.setLayout(new GridLayout(1, 3));
-
-		actionRow.add(create);
-		create.setText("Add");
-
-		actionRow.add(update);
-		update.setText("Update");
+		addComponent(new JLabel("Player position:"), 3, 0);
+		addComponent(position, 3, 1);
 		
-		actionRow.add(delete);
-		delete.setText("Delete");
+		addComponent(new JLabel("Player country:"), 4, 0);
+		addComponent(country, 4, 1);
 		
-		view.addSection(actionRow);
+		addComponent(new JLabel("Player dob:"), 5, 0);
+		addComponent(dob, 5, 1);
 		
+		addComponent(new JLabel("Player number:"), 6, 0);
+		addComponent(jersey, 6, 1);
+		add(panel);
+	}
+	
+	public void createButtons(JPanel panel) {
 		create.addActionListener(e -> this.createListener());
 		update.addActionListener(e -> this.updateListener());
 		delete.addActionListener(e -> this.deleteListener());
+		create.setEnabled(true);
+		update.setEnabled(false);
+		delete.setEnabled(false);
+		addComponent(create, 7, 0);
+		addComponent(update, 7, 1);
+		addComponent(delete, 7, 2);
+	}
+	
+	public void addComponent(JComponent component, int y, int x) {
+		gbc.gridx = x;
+		gbc.gridy = y;
+		this.panel.add(component, this.gbc);
 	}
 	
 	public void setSelection(Player selection) {
@@ -94,6 +102,9 @@ public class PlayerForm extends JPanel {
 		position.setText(selection.position);
 		team.setText(selection.team);
 		dob.setText(selection.dob);
+		create.setEnabled(false);
+		update.setEnabled(true);
+		delete.setEnabled(true);
 	}
 	
 	public void clearForm() {
@@ -106,6 +117,9 @@ public class PlayerForm extends JPanel {
 		position.setText(null);
 		team.setText(null);
 		dob.setText(null);
+		create.setEnabled(true);
+		update.setEnabled(false);
+		delete.setEnabled(false);
 	}
 	
 	public void refresh() {
