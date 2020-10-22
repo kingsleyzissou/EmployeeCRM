@@ -13,7 +13,7 @@ public class Controller {
 	
 	public Controller() {
 		model = new Model();
-		new View(this.index(), this);
+		new View(this);
 	}
 	
 	public ArrayList<Player> index() {

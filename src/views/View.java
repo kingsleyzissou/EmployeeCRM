@@ -23,7 +23,7 @@ public class View extends JFrame {
 	protected PlayerIndex list;
 	protected PlayerForm subPanel;
 
-	public View(ArrayList<Player> players, Controller controller) {		
+	public View(Controller controller) {		
 		panel = new JPanel();
 		panel.setLayout(new GridLayout(3, 1));
 
