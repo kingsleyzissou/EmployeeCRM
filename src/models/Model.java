@@ -12,22 +12,15 @@ import core.DBConnection;
 public class Model {
 	
 	private Connection connection = null;
-	
-	public Model() {
-		try {
-			this.connection = DBConnection.getConnection();
-			System.out.println("Connected to database");
-		} catch (SQLException e) {
-			System.out.println("ERROR: Could not connect to the database");
-			e.printStackTrace();
-			return;
-		}
+		
+	public void init() throws SQLException {
+		this.connection = DBConnection.getConnection();
 	}
 
 	public ArrayList<Employee> all() throws SQLException {
 		ArrayList<Employee> list = new ArrayList<>();
 		Statement stmt = this.connection.createStatement();
-		stmt.executeQuery("SELECT * FROM employees");
+		stmt.executeQuery("SELECT * FROM 20079110_employees");
 		ResultSet res = stmt.getResultSet();
 		while(res.next()) {
 			Employee employee = new Employee(
@@ -46,7 +39,7 @@ public class Model {
 	
 	public Employee show(String id) throws SQLException {
 		Statement stmt = this.connection.createStatement();
-		stmt.executeQuery("SELECT * FROM employees WHERE id = " + id);
+		stmt.executeQuery("SELECT * FROM 20079110_employees WHERE id = " + id);
 		ResultSet res = stmt.getResultSet();
 		if (res.next()) {
 			return new Employee(
@@ -64,7 +57,7 @@ public class Model {
 	}
 	
 	public void create(Employee e) throws SQLException {
-		String sql = "INSERT INTO employees ("
+		String sql = "INSERT INTO 20079110_employees ("
 				+ "firstname, lastname, salary,"
 				+ "department, position, employee_number"
 				+ ") VALUES (?, ?, ?, ?, ?, ?)";
@@ -79,7 +72,7 @@ public class Model {
 	}
 	
 	public void update(Employee e) throws SQLException {
-		String sql = "UPDATE employees SET "
+		String sql = "UPDATE 20079110_employees SET "
 				+ "firstname=?, "
 				+ "lastname=?, "
 				+ "department=?, "
@@ -99,7 +92,7 @@ public class Model {
 	}
 	
 	public void delete(Employee p) throws SQLException {
-		String sql = "DELETE FROM employees WHERE id=?";
+		String sql = "DELETE FROM 20079110_employees WHERE id=?";
 		PreparedStatement stmt = this.connection.prepareStatement(sql);
 		stmt.setInt(1, p.id);
 		stmt.executeUpdate();
