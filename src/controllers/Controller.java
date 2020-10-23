@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import models.Model;
-import models.Player;
+import models.Employee;
 import views.View;
 
 public class Controller {
@@ -16,7 +16,7 @@ public class Controller {
 		new View(this);
 	}
 	
-	public ArrayList<Player> index() {
+	public ArrayList<Employee> index() {
 		try {
 			return model.all();
 		} catch (SQLException e) {
@@ -25,7 +25,7 @@ public class Controller {
 		}
 	}
 	
-	public boolean create(Player p) {
+	public boolean create(Employee p) {
 		try {
 			model.create(p);
 			return true;
@@ -35,7 +35,7 @@ public class Controller {
 		}
 	}
 	
-	public  boolean update(Player p) {
+	public  boolean update(Employee p) {
 		try {
 			model.update(p);
 			return true;
@@ -45,7 +45,7 @@ public class Controller {
 		}
 	}
 	
-	public boolean delete(Player p) {
+	public boolean delete(Employee p) {
 		try {
 			model.delete(p);
 			return true;

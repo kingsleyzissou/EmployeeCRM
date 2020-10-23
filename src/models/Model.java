@@ -24,88 +24,82 @@ public class Model {
 		}
 	}
 
-	public ArrayList<Player> all() throws SQLException {
-		ArrayList<Player> list = new ArrayList<>();
+	public ArrayList<Employee> all() throws SQLException {
+		ArrayList<Employee> list = new ArrayList<>();
 		Statement stmt = this.connection.createStatement();
-		stmt.executeQuery("SELECT * FROM players");
+		stmt.executeQuery("SELECT * FROM employees");
 		ResultSet res = stmt.getResultSet();
 		while(res.next()) {
-			Player player = new Player(
+			Employee employee = new Employee(
 				res.getInt("id"),
+				res.getInt("employee_number"),
 				res.getString("firstname"),
 				res.getString("lastname"),
-				res.getInt("jersey"),
 				res.getString("position"),
-				res.getString("nationality"),
-				res.getString("team"),
-				res.getString("dob")
+				res.getString("department"),
+				res.getInt("salary")
 			);
-			list.add(player);
+			list.add(employee);
 		}
 		return list;
 	}
 	
-	public Player show(String id) throws SQLException {
+	public Employee show(String id) throws SQLException {
 		Statement stmt = this.connection.createStatement();
-		stmt.executeQuery("SELECT * FROM players WHERE id = " + id);
+		stmt.executeQuery("SELECT * FROM employees WHERE id = " + id);
 		ResultSet res = stmt.getResultSet();
 		if (res.next()) {
-			return new Player(
+			return new Employee(
 				res.getInt("id"),
+				res.getInt("employee_number"),
 				res.getString("firstname"),
 				res.getString("lastname"),
-				res.getInt("jersey"),
 				res.getString("position"),
-				res.getString("nationality"),
-				res.getString("team"),
-				res.getString("dob")
+				res.getString("department"),
+				res.getInt("salary")
 			);
 		}
 		System.out.println("No results found");
 		return null;
 	}
 	
-	public void create(Player p) throws SQLException {
-		String sql = "INSERT INTO players ("
-				+ "firstname, lastname, jersey,"
-				+ "nationality, position, team, dob"
-				+ ") VALUES (?, ?, ?, ?, ?, ?, ?)";
+	public void create(Employee e) throws SQLException {
+		String sql = "INSERT INTO employees ("
+				+ "firstname, lastname, salary,"
+				+ "department, position, employee_number"
+				+ ") VALUES (?, ?, ?, ?, ?, ?)";
 		PreparedStatement stmt = this.connection.prepareStatement(sql);
-		stmt.setString(1, p.name);
-		stmt.setString(2, p.lastname);
-		stmt.setInt(3, p.jersey);
-		stmt.setString(4, p.country);
-		stmt.setString(5, p.position);
-		stmt.setString(6, p.team);
-		stmt.setString(7, p.dob);
+		stmt.setString(1, e.firstname);
+		stmt.setString(2, e.lastname);
+		stmt.setInt(3, e.salary);
+		stmt.setString(4, e.department);
+		stmt.setString(5, e.position);
+		stmt.setInt(6, e.employee_number);
 		stmt.executeUpdate();
 	}
 	
-	public void update(Player p) throws SQLException {
-		String sql = "UPDATE players SET "
+	public void update(Employee e) throws SQLException {
+		String sql = "UPDATE employees SET "
 				+ "firstname=?, "
 				+ "lastname=?, "
-				+ "jersey=?, "
-				+ "nationality=?, "
+				+ "department=?, "
 				+ "position=?, "
-				+ "team=?, "
-				+ "dob=? "
+				+ "salary=?, "
+				+ "employee_number=? "
 				+ "WHERE id=?";
 		PreparedStatement stmt = this.connection.prepareStatement(sql);
-		stmt.setString(1, p.name);
-		stmt.setString(2, p.lastname);
-		stmt.setInt(3, p.jersey);
-		stmt.setString(4, p.country);
-		stmt.setString(5, p.position);
-		stmt.setString(6, p.team);
-		stmt.setString(7, p.dob);
-		stmt.setInt(8, p.id);
-		System.out.println(sql);
+		stmt.setString(1, e.firstname);
+		stmt.setString(2, e.lastname);
+		stmt.setString(3, e.department);
+		stmt.setString(4, e.position);
+		stmt.setInt(5, e.salary);
+		stmt.setInt(6, e.employee_number);
+		stmt.setInt(7, e.id);
 		stmt.executeUpdate();
 	}
 	
-	public void delete(Player p) throws SQLException {
-		String sql = "DELETE FROM players WHERE id=?";
+	public void delete(Employee p) throws SQLException {
+		String sql = "DELETE FROM employees WHERE id=?";
 		PreparedStatement stmt = this.connection.prepareStatement(sql);
 		stmt.setInt(1, p.id);
 		stmt.executeUpdate();

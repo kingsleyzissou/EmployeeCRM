@@ -11,23 +11,22 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controllers.Controller;
-import models.Player;
+import models.Employee;
 
-public class PlayerForm extends JPanel {
+public class EmployeeForm extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private Controller controller;
 	private View view;
-	private Player selection;
+	private Employee selection;
 	
 	private JPanel panel =  new JPanel();
 	private JTextField name = new JTextField(10);
 	private JTextField lastname = new JTextField(10);
-	private JTextField jersey = new JTextField(10);
-	private JTextField team = new JTextField(10);
-	private JTextField country = new JTextField(10);
-	private JTextField dob = new JTextField(10);
+	private JTextField salary = new JTextField(10);
+	private JTextField department = new JTextField(10);
+	private JTextField employee_number = new JTextField(10);
 	private JTextField position = new JTextField(10);
 	private JButton create = new JButton("Add");
 	private JButton update = new JButton("Edit");
@@ -35,7 +34,7 @@ public class PlayerForm extends JPanel {
 	
 	private GridBagConstraints gbc = new GridBagConstraints();
 	
-	public PlayerForm(View view, Controller controller) {
+	public EmployeeForm(View view, Controller controller) {
 		this.controller = controller;
 		this.view = view;
 		this.createFormFields(panel);
@@ -48,26 +47,24 @@ public class PlayerForm extends JPanel {
         
         panel.setLayout(new GridBagLayout());
         
-		addComponent(new JLabel("Player name:"), 0, 0);
-		addComponent(name, 0, 1);
+		addComponent(new JLabel("Employee number:"), 0, 0);
+		addComponent(employee_number, 0, 1);
 		
-		addComponent(new JLabel("Player lastname:"), 1, 0);
-		addComponent(lastname, 1, 1);
+		addComponent(new JLabel("Employee name:"), 1, 0);
+		addComponent(name, 1, 1);
 		
-		addComponent(new JLabel("Player team:"), 2, 0);
-		addComponent(team, 2, 1);
+		addComponent(new JLabel("Employee surname:"), 2, 0);
+		addComponent(lastname, 2, 1);
 		
-		addComponent(new JLabel("Player position:"), 3, 0);
+		addComponent(new JLabel("Employee position:"), 3, 0);
 		addComponent(position, 3, 1);
 		
-		addComponent(new JLabel("Player country:"), 4, 0);
-		addComponent(country, 4, 1);
+		addComponent(new JLabel("Employee department:"), 4, 0);
+		addComponent(department, 4, 1);
 		
-		addComponent(new JLabel("Player dob:"), 5, 0);
-		addComponent(dob, 5, 1);
+		addComponent(new JLabel("Employee salary:"), 5, 0);
+		addComponent(salary, 5, 1);
 		
-		addComponent(new JLabel("Player number:"), 6, 0);
-		addComponent(jersey, 6, 1);
 		add(panel);
 	}
 	
@@ -89,19 +86,18 @@ public class PlayerForm extends JPanel {
 		this.panel.add(component, this.gbc);
 	}
 	
-	public void setSelection(Player selection) {
+	public void setSelection(Employee selection) {
 		this.selection = selection;
 		if (selection != null) this.setFormFields();
 	}
 	
 	public void setFormFields() {
-		name.setText(selection.name);
+		employee_number.setText("" + selection.employee_number);
+		name.setText(selection.firstname);
 		lastname.setText(selection.lastname);
-		jersey.setText("" + selection.jersey);
-		country.setText(selection.country);
+		salary.setText("" + selection.salary);
 		position.setText(selection.position);
-		team.setText(selection.team);
-		dob.setText(selection.dob);
+		department.setText(selection.department);
 		create.setEnabled(false);
 		update.setEnabled(true);
 		delete.setEnabled(true);
@@ -112,11 +108,10 @@ public class PlayerForm extends JPanel {
 		this.view.clearSelection();
 		name.setText(null);
 		lastname.setText(null);
-		jersey.setText(null);
-		country.setText(null);
+		employee_number.setText(null);
+		salary.setText(null);
 		position.setText(null);
-		team.setText(null);
-		dob.setText(null);
+		department.setText(null);
 		create.setEnabled(true);
 		update.setEnabled(false);
 		delete.setEnabled(false);
@@ -124,32 +119,30 @@ public class PlayerForm extends JPanel {
 	
 	public void refresh() {
 		this.clearForm();
-		ArrayList<Player> players = controller.index();
+		ArrayList<Employee> players = controller.index();
 		this.view.updateList(players);
 	}
 	
 	public boolean validateForm() {
 		if (name.getText() == null) return false;
 		if (lastname.getText() == null) return false;
-		if (jersey.getText() == null) return false;
+		if (salary.getText() == null) return false;
 		if (position.getText() == null) return false;
-		if (country.getText() == null) return false;
-		if (team.getText() == null) return false;
-		if (dob.getText() == null) return false;
+		if (employee_number.getText() == null) return false;
+		if (department.getText() == null) return false;
 		return true;
 	}
 	
-	public Player playerFromFields() {
+	public Employee employeeFromFields() {
 		int id = selection != null ? selection.id : -1;
-		return new Player(
+		return new Employee(
 				id,
+				Integer.parseInt(employee_number.getText()),
 				name.getText(),
 				lastname.getText(),
-				Integer.parseInt(jersey.getText()),
 				position.getText(),
-				country.getText(),
-				team.getText(),
-				dob.getText()
+				department.getText(),
+				Integer.parseInt(salary.getText())
 		);
 	}
 	
@@ -158,8 +151,8 @@ public class PlayerForm extends JPanel {
 			System.out.println("Please check your fields and try again");
 			return;
 		}
-		Player p = this.playerFromFields();
-		controller.create(p);
+		Employee e = this.employeeFromFields();
+		controller.create(e);
 		this.refresh();
 	}
 	
@@ -168,8 +161,8 @@ public class PlayerForm extends JPanel {
 			System.out.println("Please check your fields and try again");
 			return;
 		}
-		Player p = this.playerFromFields();
-		controller.update(p);
+		Employee e = this.employeeFromFields();
+		controller.update(e);
 		this.refresh();
 	}
 	
