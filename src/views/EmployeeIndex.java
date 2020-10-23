@@ -74,11 +74,9 @@ public class EmployeeIndex extends JPanel {
 	 */
 	public void filter() {
 		if (query.getText() == null) return;
-		// Convert string to uppercase for comparison
+		// Convert string to upper case for comparison
 		String q = query.getText().toUpperCase();
-		// Create search predicate (predicate is based on all string values)
-		Predicate<Employee> predicate = p -> p.department.toUpperCase().equals(q) || p.firstname.toUpperCase().equals(q) || p.lastname.toUpperCase().equals(q)
-				|| p.position.toUpperCase().equals(q);
+		Predicate<Employee> predicate = e -> getPredicate(e, q);
 		ArrayList<Employee> filtered = (ArrayList<Employee>) this.employees
 				// stream data
 				.stream()
@@ -88,6 +86,24 @@ public class EmployeeIndex extends JPanel {
 				.collect(Collectors.toList());
 		// display filtered results
 		this.update(filtered);
+	}
+	
+	/**
+	 * Compare query parameter and employee and
+	 * return a boolean value for whether the employee
+	 * matches the search criteria or not
+	 * 
+	 * @param e employee to compare to
+	 * @param q query string
+	 * @return truth if employee matches query string
+	 */
+	public boolean getPredicate(Employee e, String q) {
+		return e.department.toUpperCase().equals(q) 
+				|| e.firstname.toUpperCase().equals(q) 
+				|| e.lastname.toUpperCase().equals(q)
+				|| e.position.toUpperCase().equals(q) 
+				|| ("" + e.salary).equals(q) 
+				|| ("" + e.employee_number).equals(q);
 	}
 	
 	/**
@@ -128,7 +144,7 @@ public class EmployeeIndex extends JPanel {
 	public void addComponent(JComponent component, int x, int y, int width) {
 		gbc.gridx = x;
 		gbc.gridy = y;
-		gbc.gridwidth = 3;
+		gbc.gridwidth = width;
 		panel.add(component, gbc);
 	}
 

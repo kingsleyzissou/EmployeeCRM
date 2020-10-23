@@ -46,6 +46,8 @@ public class Model {
 			);
 			list.add(employee);
 		}
+		res.close();
+		stmt.close();
 		return list;
 	}
 	
@@ -77,7 +79,7 @@ public class Model {
 	/**
 	 * Add employee to the database
 	 * 
-	 * @param e employe to be added to database
+	 * @param e employee to be added to database
 	 * @throws SQLException
 	 */
 	public void create(Employee e) throws SQLException {
@@ -119,6 +121,7 @@ public class Model {
 		stmt.setInt(6, e.employee_number);
 		stmt.setInt(7, e.id);
 		stmt.executeUpdate();
+		stmt.close();
 	}
 	
 	/**
@@ -132,6 +135,7 @@ public class Model {
 		PreparedStatement stmt = this.connection.prepareStatement(sql);
 		stmt.setInt(1, e.id);
 		stmt.executeUpdate();
+		stmt.close();
 	}
 
 }
