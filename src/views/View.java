@@ -11,6 +11,8 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 import controllers.Controller;
 import models.Employee;
 
@@ -71,6 +73,10 @@ public class View extends JFrame {
 	
 	public void setSelection(Employee selection) {
 		subPanel.setSelection(selection);
+	}
+
+	public void showError(String message) {
+		showMessageDialog(null, message);
 	}
 
 

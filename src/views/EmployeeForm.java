@@ -117,20 +117,35 @@ public class EmployeeForm extends JPanel {
 		delete.setEnabled(false);
 	}
 	
+	public void createListener() {
+		if (this.validateForm(selection == null)) {
+			Employee e = this.employeeFromFields();
+			controller.create(e);
+			this.refresh();
+		}
+	}
+	
+	public void updateListener() {
+		if (this.validateForm(selection != null)) {
+			Employee e = this.employeeFromFields();
+			controller.update(e);
+			this.refresh();
+		}
+	}
+	
+	private void deleteListener() {
+		if (selection == null) {
+			view.showError("Please select a player before trying to delete");
+			return;
+		}
+		controller.delete(selection);
+		this.refresh();
+	}
+	
 	public void refresh() {
 		this.clearForm();
 		ArrayList<Employee> players = controller.index();
 		this.view.updateList(players);
-	}
-	
-	public boolean validateForm() {
-		if (name.getText() == null) return false;
-		if (lastname.getText() == null) return false;
-		if (salary.getText() == null) return false;
-		if (position.getText() == null) return false;
-		if (employee_number.getText() == null) return false;
-		if (department.getText() == null) return false;
-		return true;
 	}
 	
 	public Employee employeeFromFields() {
@@ -146,33 +161,47 @@ public class EmployeeForm extends JPanel {
 		);
 	}
 	
-	public void createListener() {
-		if (selection != null || !this.validateForm()) {
-			System.out.println("Please check your fields and try again");
-			return;
+	public boolean isNumeric(String value) {
+		try {
+			Integer.parseInt(value);
+			return true;
+		} catch(Exception e) {
+			return false;
 		}
-		Employee e = this.employeeFromFields();
-		controller.create(e);
-		this.refresh();
 	}
 	
-	public void updateListener() {
-		if (selection == null || !this.validateForm()) {
-			System.out.println("Please check your fields and try again");
-			return;
+	public boolean validateForm(Boolean startingCondition) {
+		String errors = "";
+		if (!startingCondition) {
+			errors += "- Form error check selected value\n";
 		}
-		Employee e = this.employeeFromFields();
-		controller.update(e);
-		this.refresh();
-	}
-	
-	private void deleteListener() {
-		if (selection == null) {
-			System.out.println("Please select a player before trying to delete");
-			return;
+		if (name.getText().equals("")) {
+			errors += "- Name cannot be empty\n";
 		}
-		controller.delete(selection);
-		this.refresh();
+		if (lastname.getText().equals("")) {
+			errors += "- Surname cannot be empty\n";
+		}
+		if (salary.getText().equals("")) {
+			errors += "- Salary cannot be empty\n";
+		};
+		if (!isNumeric(salary.getText())) {
+			errors += "- Salary must be a number\n";
+		};
+		if (position.getText().equals("")) {
+			errors += "- Position cannot be empty\n";
+		}
+		if (employee_number.getText().equals("")) {
+			errors += "- Employee number cannot be empty\n";
+		}
+		if (!isNumeric(employee_number.getText())) {
+			errors += "- Employee number must be a number\n";
+		}
+		if (department.getText().equals("")) {
+			errors += "- Department cannot be empty\n";
+		}
+		if (errors.equals("")) return true;
+		view.showError(errors);
+		return false;
 	}
 
 }

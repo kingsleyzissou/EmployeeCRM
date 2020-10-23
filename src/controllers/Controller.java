@@ -3,6 +3,8 @@ package controllers;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 import models.Model;
 import models.Employee;
 import views.View;
@@ -10,10 +12,22 @@ import views.View;
 public class Controller {
 	
 	private Model model;
+	private View view;
 	
 	public Controller() {
 		model = new Model();
-		new View(this);
+	}
+	
+	public void init() {
+		try {
+			model.init();
+			System.out.println("Connected to database");
+			view = new View(this);
+		} catch(SQLException e) {
+			showMessageDialog(null, "Unable to connect to database");
+			e.printStackTrace();
+			System.exit(0);
+		}
 	}
 	
 	public ArrayList<Employee> index() {
@@ -21,6 +35,7 @@ public class Controller {
 			return model.all();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			view.showError("Error fetching Employees");
 			return null;
 		}
 	}
@@ -31,6 +46,7 @@ public class Controller {
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			view.showError("Error creating Employee");
 			return false;
 		}
 	}
@@ -41,6 +57,7 @@ public class Controller {
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			view.showError("Error updating Employee");
 			return false;
 		}
 	}
@@ -51,6 +68,7 @@ public class Controller {
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			view.showError("Error deleting Employee");
 			return false;
 		}
 	}
