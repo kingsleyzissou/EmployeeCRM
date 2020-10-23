@@ -7,7 +7,7 @@ https://github.com/kingsleyzissou/EmployeeCRM.
 ## NB
 
 My local database forced me to create a password for the database connection,
-otherwise connection was to the database was refused.
+otherwise connection to the database was refused.
 
 Please remove the password field in the `core/DBConnection` class as required.
 
