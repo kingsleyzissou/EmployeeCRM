@@ -1,2 +1,2 @@
-# FootballCRM
+# EmployeeCRM
 Distributed systems assignment
