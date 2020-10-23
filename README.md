@@ -1,6 +1,8 @@
 # EmployeeCRM
 
 Distributed systems assignment
+The repo for this project can be found on
+https://github.com/kingsleyzissou/EmployeeCRM.
 
 ## NB
 
