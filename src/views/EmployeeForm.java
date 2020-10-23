@@ -148,7 +148,7 @@ public class EmployeeForm extends JPanel {
 	
 	public void createListener() {
 		if (selection != null || !this.validateForm()) {
-			System.out.println("Please check your fields and try again");
+			view.showError("Please check your fields and try again");
 			return;
 		}
 		Employee e = this.employeeFromFields();
@@ -158,7 +158,7 @@ public class EmployeeForm extends JPanel {
 	
 	public void updateListener() {
 		if (selection == null || !this.validateForm()) {
-			System.out.println("Please check your fields and try again");
+			view.showError("Please check your fields and try again");
 			return;
 		}
 		Employee e = this.employeeFromFields();
@@ -168,7 +168,7 @@ public class EmployeeForm extends JPanel {
 	
 	private void deleteListener() {
 		if (selection == null) {
-			System.out.println("Please select a player before trying to delete");
+			view.showError("Please select a player before trying to delete");
 			return;
 		}
 		controller.delete(selection);

@@ -10,10 +10,11 @@ import views.View;
 public class Controller {
 	
 	private Model model;
+	private View view;
 	
 	public Controller() {
 		model = new Model();
-		new View(this);
+		view = new View(this);
 	}
 	
 	public ArrayList<Employee> index() {
@@ -21,6 +22,7 @@ public class Controller {
 			return model.all();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			view.showError("Error fetching Employees");
 			return null;
 		}
 	}
@@ -31,6 +33,7 @@ public class Controller {
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			view.showError("Error creating Employee");
 			return false;
 		}
 	}
@@ -41,6 +44,7 @@ public class Controller {
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			view.showError("Error updating Employee");
 			return false;
 		}
 	}
@@ -51,6 +55,7 @@ public class Controller {
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			view.showError("Error deleting Employee");
 			return false;
 		}
 	}
