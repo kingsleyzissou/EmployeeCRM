@@ -12,7 +12,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import controllers.Controller;
-import models.Player;
+import models.Employee;
 
 public class View extends JFrame {
 
@@ -20,8 +20,8 @@ public class View extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	protected JPanel panel;
-	protected PlayerIndex list;
-	protected PlayerForm subPanel;
+	protected EmployeeIndex list;
+	protected EmployeeForm subPanel;
 
 	public View(Controller controller) {	
 		
@@ -33,25 +33,27 @@ public class View extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1;
         
-		list = new PlayerIndex(this, controller);
+		list = new EmployeeIndex(this, controller);
 		list.setBorder(new CompoundBorder(
-				new TitledBorder("Player list"),
+				new TitledBorder("Employee list"),
 				new EmptyBorder(4, 4, 4, 4)
 		));
+		
+		
+		subPanel = new EmployeeForm(this, controller);
+		subPanel.setBorder(new CompoundBorder(
+				new TitledBorder("Employee details"),
+				new EmptyBorder(4, 4, 4, 4)
+		));
+		
+		panel.add(subPanel, gbc);
+		
+		gbc.gridx = 1;
+        gbc.gridy = 0;
 		
 		panel.add(list, gbc);
-		
-		subPanel = new PlayerForm(this, controller);
-		subPanel.setBorder(new CompoundBorder(
-				new TitledBorder("Player details"),
-				new EmptyBorder(4, 4, 4, 4)
-		));
-		
-		gbc.gridx = 0;
-        gbc.gridy = 1;
-		panel.add(subPanel, gbc);
 
-		setTitle("Football Player CRM");
+		setTitle("Employee CRM");
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getContentPane().add(panel, BorderLayout.CENTER);
@@ -63,11 +65,11 @@ public class View extends JFrame {
 		list.clearSelection();
 	}
 	
-	public void updateList(ArrayList<Player> players) {
+	public void updateList(ArrayList<Employee> players) {
 		list.update(players);
 	}
 	
-	public void setSelection(Player selection) {
+	public void setSelection(Employee selection) {
 		subPanel.setSelection(selection);
 	}
 

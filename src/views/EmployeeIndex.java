@@ -13,25 +13,25 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controllers.Controller;
-import models.Player;
+import models.Employee;
 
-public class PlayerIndex extends JPanel {
+public class EmployeeIndex extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	private ArrayList<Player> players;
+	private ArrayList<Employee> players;
 	private Controller controller;
 	private View view;
 
-	private JList<Player> list;
+	private JList<Employee> list;
 	private JTextField query = new JTextField(10);
     private JButton search = new JButton("Search");
     private JButton clear = new JButton("x");
 
-	public PlayerIndex(View view, Controller controller) {
+	public EmployeeIndex(View view, Controller controller) {
 		this.controller = controller;
 		this.view = view;
-		list = new JList<Player>();
+		list = new JList<Employee>();
 		this.update(controller.index());
 		list.addListSelectionListener(e -> this.showListener());
 		JPanel panel = new JPanel();
@@ -59,9 +59,9 @@ public class PlayerIndex extends JPanel {
 		add(panel);
 	}
 
-	public void update(ArrayList<Player> players) {
+	public void update(ArrayList<Employee> players) {
 		this.players = players;
-		DefaultListModel<Player> model = new DefaultListModel<Player>();
+		DefaultListModel<Employee> model = new DefaultListModel<Employee>();
 		model.addAll(players);
 		list.setModel(model);
 		list.updateUI();
@@ -70,9 +70,9 @@ public class PlayerIndex extends JPanel {
 	public void filter() {
 		if (query.getText() == null) return;
 		String q = query.getText().toUpperCase();
-		Predicate<Player> predicate = p -> p.team.toUpperCase().equals(q) || p.name.toUpperCase().equals(q) || p.lastname.toUpperCase().equals(q)
-				|| p.position.toUpperCase().equals(q) || p.country.toUpperCase().equals(q);
-		ArrayList<Player> filtered = (ArrayList<Player>) this.players.stream().filter(predicate).collect(Collectors.toList());
+		Predicate<Employee> predicate = p -> p.department.toUpperCase().equals(q) || p.firstname.toUpperCase().equals(q) || p.lastname.toUpperCase().equals(q)
+				|| p.position.toUpperCase().equals(q);
+		ArrayList<Employee> filtered = (ArrayList<Employee>) this.players.stream().filter(predicate).collect(Collectors.toList());
 		this.update(filtered);
 	}
 	
@@ -86,7 +86,7 @@ public class PlayerIndex extends JPanel {
 	}
 
 	public void showListener() {
-		Player s = list.getSelectedValue();
+		Employee s = list.getSelectedValue();
 		view.setSelection(s);
 	}
 
