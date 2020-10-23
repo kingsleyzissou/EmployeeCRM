@@ -2,6 +2,7 @@ package models;
 
 public class Employee {
 	
+	// public fields are used to simplify code
 	public int id;
 	public int employee_number;
 	public String firstname;
@@ -31,16 +32,16 @@ public class Employee {
 	
 	public String toString() {
 		return  this.employee_number
-				+ " - "
+				+ "| "
 				+ this.firstname 
 				+ " " 
 				+ this.lastname 
 				+ " (" 
 				+ this.position 
-				+ ")"
+				+ ""
 				+ " - "
 				+ this.department
-				+ " "
+				+ ") Salary: $"
 				+ this.salary;
 	}
 
