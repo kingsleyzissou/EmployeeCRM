@@ -11,13 +11,20 @@ import views.View;
 
 public class Controller {
 	
+	/** Model for querying database */
 	private Model model;
+	
+	/** Gui view */
 	private View view;
 	
 	public Controller() {
 		model = new Model();
 	}
 	
+	/**
+	 * Method to instantiate the controller,
+	 * create the model and render the view
+	 */
 	public void init() {
 		try {
 			model.init();
@@ -30,6 +37,11 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Return array list of employees
+	 * 
+	 * @return list of employees
+	 */
 	public ArrayList<Employee> index() {
 		try {
 			return model.all();
@@ -40,9 +52,15 @@ public class Controller {
 		}
 	}
 	
-	public boolean create(Employee p) {
+	/**
+	 * Create an employee
+	 * 
+	 * @param employee to be added
+	 * @return truthy value for successful add
+	 */
+	public boolean create(Employee employee) {
 		try {
-			model.create(p);
+			model.create(employee);
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -51,9 +69,15 @@ public class Controller {
 		}
 	}
 	
-	public  boolean update(Employee p) {
+	/**
+	 * Update an employee
+	 * 
+	 * @param employee to be updated
+	 * @return truthy value for successful update
+	 */
+	public  boolean update(Employee employee) {
 		try {
-			model.update(p);
+			model.update(employee);
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -62,9 +86,15 @@ public class Controller {
 		}
 	}
 	
-	public boolean delete(Employee p) {
+	/**
+	 * Delete an employee
+	 * 
+	 * @param employee to be deleted
+	 * @return truthy value for successful delete
+	 */
+	public boolean delete(Employee employee) {
 		try {
-			model.delete(p);
+			model.delete(employee);
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();

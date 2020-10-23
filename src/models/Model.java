@@ -12,11 +12,23 @@ import core.DBConnection;
 public class Model {
 	
 	private Connection connection = null;
-		
+	
+	/**
+	 * Instantiate the model
+	 * 
+	 * @throws SQLException
+	 */
 	public void init() throws SQLException {
 		this.connection = DBConnection.getConnection();
 	}
 
+	/**
+	 * Method to get all the employees
+	 * from the database
+	 * 
+	 * @return list of all employees
+	 * @throws SQLException
+	 */
 	public ArrayList<Employee> all() throws SQLException {
 		ArrayList<Employee> list = new ArrayList<>();
 		Statement stmt = this.connection.createStatement();
@@ -37,6 +49,13 @@ public class Model {
 		return list;
 	}
 	
+	/**
+	 * Return a specific employee by id
+	 * 
+	 * @param id of employee
+	 * @return employee
+	 * @throws SQLException
+	 */
 	public Employee show(String id) throws SQLException {
 		Statement stmt = this.connection.createStatement();
 		stmt.executeQuery("SELECT * FROM 20079110_employees WHERE id = " + id);
@@ -52,10 +71,15 @@ public class Model {
 				res.getInt("salary")
 			);
 		}
-		System.out.println("No results found");
 		return null;
 	}
 	
+	/**
+	 * Add employee to the database
+	 * 
+	 * @param e employe to be added to database
+	 * @throws SQLException
+	 */
 	public void create(Employee e) throws SQLException {
 		String sql = "INSERT INTO 20079110_employees ("
 				+ "firstname, lastname, salary,"
@@ -71,6 +95,12 @@ public class Model {
 		stmt.executeUpdate();
 	}
 	
+	/**
+	 * Edit existing database employee
+	 * 
+	 * @param e employee to be updated
+	 * @throws SQLException
+	 */
 	public void update(Employee e) throws SQLException {
 		String sql = "UPDATE 20079110_employees SET "
 				+ "firstname=?, "
@@ -91,10 +121,16 @@ public class Model {
 		stmt.executeUpdate();
 	}
 	
-	public void delete(Employee p) throws SQLException {
+	/**
+	 * Delete existing database employee
+	 * 
+	 * @param e employee to be deleted
+	 * @throws SQLException
+	 */
+	public void delete(Employee e) throws SQLException {
 		String sql = "DELETE FROM 20079110_employees WHERE id=?";
 		PreparedStatement stmt = this.connection.prepareStatement(sql);
-		stmt.setInt(1, p.id);
+		stmt.setInt(1, e.id);
 		stmt.executeUpdate();
 	}
 

@@ -5,6 +5,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
@@ -18,43 +19,40 @@ import models.Employee;
 
 public class View extends JFrame {
 
-
 	private static final long serialVersionUID = 1L;
 	
-	protected JPanel panel;
-	protected EmployeeIndex list;
-	protected EmployeeForm subPanel;
+	private EmployeeIndex index;
+	private EmployeeForm form;
 
+	private JPanel panel = new JPanel();
+	private GridBagConstraints gbc = new GridBagConstraints();
+	
 	public View(Controller controller) {	
-		
-		panel = new JPanel();
+		// set panel layout
         panel.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
+       
+        // set gridbag options
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1;
         
-		list = new EmployeeIndex(this, controller);
-		list.setBorder(new CompoundBorder(
+        // create new form view and set border
+ 		form = new EmployeeForm(this, controller);
+ 		form.setBorder(new CompoundBorder(
+ 				new TitledBorder("Employee details"),
+ 				new EmptyBorder(4, 4, 4, 4)
+ 		));
+        
+        // create new list view and add border
+		index = new EmployeeIndex(this, controller);
+		index.setBorder(new CompoundBorder(
 				new TitledBorder("Employee list"),
 				new EmptyBorder(4, 4, 4, 4)
 		));
 		
-		
-		subPanel = new EmployeeForm(this, controller);
-		subPanel.setBorder(new CompoundBorder(
-				new TitledBorder("Employee details"),
-				new EmptyBorder(4, 4, 4, 4)
-		));
-		
-		panel.add(subPanel, gbc);
-		
-		gbc.gridx = 1;
-        gbc.gridy = 0;
-		
-		panel.add(list, gbc);
+		addComponent(form, 0, 0);
+		addComponent(index, 1, 0);
 
+		// set JFrame options
 		setTitle("Employee CRM");
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -62,19 +60,54 @@ public class View extends JFrame {
 		pack();
 		setVisible(true);
 	}
+	
+	/**
+	 * Custom helper function to add component
+	 * to panel with GridBagConstraints
+	 * 
+	 * @param component to be added
+	 * @param x grid value
+	 * @param y grid value
+	 */
+	public void addComponent(JComponent component, int x, int y) {
+		gbc.gridx = x;
+		gbc.gridy = y;
+		panel.add(component, gbc);
+	}
 
+	/**
+	 * Clear the selected employee
+	 * 
+	 */
 	public void clearSelection() {
-		list.clearSelection();
+		index.clearSelection();
 	}
 	
-	public void updateList(ArrayList<Employee> players) {
-		list.update(players);
+	/**
+	 * Update the employee list and
+	 * refresh the UI
+	 * 
+	 * @param employees
+	 */
+	public void updateList(ArrayList<Employee> employees) {
+		index.update(employees);
 	}
 	
+	/**
+	 * Set the selected employee
+	 * for the form field
+	 * 
+	 * @param selection employee
+	 */
 	public void setSelection(Employee selection) {
-		subPanel.setSelection(selection);
+		form.setSelection(selection);
 	}
 
+	/**
+	 * Display error message
+	 * 
+	 * @param message
+	 */
 	public void showError(String message) {
 		showMessageDialog(null, message);
 	}

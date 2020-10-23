@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -19,75 +20,116 @@ public class EmployeeIndex extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	private ArrayList<Employee> players;
+	private ArrayList<Employee> employees;
 	private Controller controller;
 	private View view;
 
-	private JList<Employee> list;
+	private JList<Employee> list = new JList<Employee>();
 	private JTextField query = new JTextField(10);
     private JButton search = new JButton("Search");
     private JButton clear = new JButton("x");
+    private JPanel panel = new JPanel();
+    private GridBagConstraints gbc = new GridBagConstraints();
 
 	public EmployeeIndex(View view, Controller controller) {
 		this.controller = controller;
 		this.view = view;
-		list = new JList<Employee>();
-		this.update(controller.index());
-		list.addListSelectionListener(e -> this.showListener());
-		JPanel panel = new JPanel();
+		
+		// Set layout options
 		panel.setLayout(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-        gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1;
+        add(panel);
         
-        panel.add(query, gbc);
+        // add components
+        addComponent(query, 0, 0, 1);
+        addComponent(search,  1, 0, 1);
+        addComponent(clear, 2, 0, 1);
+        addComponent(list, 0, 1, 3);
         
-        gbc.gridx = 1;
-        panel.add(search, gbc);
+        update(controller.index());
+        // add event listeners
+        list.addListSelectionListener(e -> this.setSelection());
         search.addActionListener(e -> this.filter());
-        
-        gbc.gridx = 2;
-        panel.add(clear, gbc);
         clear.addActionListener(e -> this.clearSearch());
-        
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 3;
-        panel.add(list, gbc);
-		add(panel);
 	}
-
-	public void update(ArrayList<Employee> players) {
-		this.players = players;
+	
+	/**
+	 * Refresh the JList component
+	 * with updated data
+	 * 
+	 * @param employees
+	 */
+	public void update(ArrayList<Employee> employees) {
+		this.employees = employees;
 		DefaultListModel<Employee> model = new DefaultListModel<Employee>();
-		model.addAll(players);
+		model.addAll(employees);
 		list.setModel(model);
 		list.updateUI();
 	}
 
+	/**
+	 * Filter the employee list based
+	 * on the search criteria
+	 * 
+	 */
 	public void filter() {
 		if (query.getText() == null) return;
+		// Convert string to uppercase for comparison
 		String q = query.getText().toUpperCase();
+		// Create search predicate (predicate is based on all string values)
 		Predicate<Employee> predicate = p -> p.department.toUpperCase().equals(q) || p.firstname.toUpperCase().equals(q) || p.lastname.toUpperCase().equals(q)
 				|| p.position.toUpperCase().equals(q);
-		ArrayList<Employee> filtered = (ArrayList<Employee>) this.players.stream().filter(predicate).collect(Collectors.toList());
+		ArrayList<Employee> filtered = (ArrayList<Employee>) this.employees
+				// stream data
+				.stream()
+				// filter on query predicate
+				.filter(predicate)
+				// return list
+				.collect(Collectors.toList());
+		// display filtered results
 		this.update(filtered);
 	}
 	
+	/**
+	 * Clear the search query
+	 * 
+	 */
 	public void clearSearch() {
 		this.query.setText(null);
 		this.update(this.controller.index());
 	}
 
+	/**
+	 * Select an employee
+	 * 
+	 */
+	public void setSelection() {
+		Employee s = list.getSelectedValue();
+		view.setSelection(s);
+	}
+	
+	/**
+	 * Clear employee selection
+	 * 
+	 */
 	public void clearSelection() {
 		list.clearSelection();
 	}
-
-	public void showListener() {
-		Employee s = list.getSelectedValue();
-		view.setSelection(s);
+	
+	/**
+	 * Custom helper function to add component
+	 * to panel with GridBagConstraints
+	 * 
+	 * @param component to be added
+	 * @param x grid value
+	 * @param y grid value
+	 * @param width grid width
+	 */
+	public void addComponent(JComponent component, int x, int y, int width) {
+		gbc.gridx = x;
+		gbc.gridy = y;
+		gbc.gridwidth = 3;
+		panel.add(component, gbc);
 	}
 
 }
