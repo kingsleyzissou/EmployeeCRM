@@ -7,9 +7,19 @@ https://github.com/kingsleyzissou/EmployeeCRM.
 ## NB
 
 My local database forced me to create a password for the database connection,
-otherwise connection to the database was refused.
+otherwise connection to the database was refused. I have set the password to `root`.
 
-Please remove the password field in the `core/DBConnection` class as required.
+Please modify the password field in the `core/DBConnection` class as required.
+
+## Usage
+
+![](img/usage.png)
+
+To select an employee, click on the employee in the list on the right hand side. The details will appear in the form and the `Edit` & `Delete` buttons will become available.
+
+![](img/search.png)
+
+The search feature uses predicates to filter through the stored data. The employees are saved to an array list and the filtering takes place on the array list rather than additonal calls to the database, in order to limit the number of database calls. The search functionality works for any of the fields seen in the form and you can search by employee number, name, surname, position deparment or salary.
 
 ## Structure
 
