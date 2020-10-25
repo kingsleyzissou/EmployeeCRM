@@ -62,7 +62,7 @@ public class EmployeeIndex extends JPanel {
 	public void update(ArrayList<Employee> employees) {
 		this.employees = employees;
 		DefaultListModel<Employee> model = new DefaultListModel<Employee>();
-		model.addAll(employees);
+		employees.forEach(e -> model.addElement(e));
 		list.setModel(model);
 		list.updateUI();
 	}

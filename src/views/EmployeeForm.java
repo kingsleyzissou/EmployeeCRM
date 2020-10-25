@@ -31,6 +31,7 @@ public class EmployeeForm extends JPanel {
 	private JButton create = new JButton("Add");
 	private JButton update = new JButton("Edit");
 	private JButton delete = new JButton("Delete");
+	private JButton clear = new JButton("Clear");
 	
 	private GridBagConstraints gbc = new GridBagConstraints();
 	
@@ -56,23 +57,23 @@ public class EmployeeForm extends JPanel {
 	 * 
 	 */
 	public void createFormFields() {     
-		addComponent(new JLabel("Employee number:"), 0, 0);
-		addComponent(employee_number, 0, 1);
+		addComponent(new JLabel("Employee number:"), 0, 0, 2);
+		addComponent(employee_number, 0, 2, 2);
 		
-		addComponent(new JLabel("Employee name:"), 1, 0);
-		addComponent(name, 1, 1);
+		addComponent(new JLabel("Employee name:"), 1, 0, 2);
+		addComponent(name, 1, 2, 2);
 		
-		addComponent(new JLabel("Employee surname:"), 2, 0);
-		addComponent(lastname, 2, 1);
+		addComponent(new JLabel("Employee surname:"), 2, 0, 2);
+		addComponent(lastname, 2, 2, 2);
 		
-		addComponent(new JLabel("Employee position:"), 3, 0);
-		addComponent(position, 3, 1);
+		addComponent(new JLabel("Employee position:"), 3, 0, 2);
+		addComponent(position, 3, 2, 2);
 		
-		addComponent(new JLabel("Employee department:"), 4, 0);
-		addComponent(department, 4, 1);
+		addComponent(new JLabel("Employee department:"), 4, 0, 2);
+		addComponent(department, 4, 2, 2);
 		
-		addComponent(new JLabel("Employee salary ($):"), 5, 0);
-		addComponent(salary, 5, 1);
+		addComponent(new JLabel("Employee salary ($):"), 5, 0, 2);
+		addComponent(salary, 5, 2, 2);
 	}
 	
 	/**
@@ -84,13 +85,15 @@ public class EmployeeForm extends JPanel {
 		create.addActionListener(e -> this.createListener());
 		update.addActionListener(e -> this.updateListener());
 		delete.addActionListener(e -> this.deleteListener());
+		clear.addActionListener(e -> this.clearForm());
 		// prevent accidental button clicks
 		create.setEnabled(true);
 		update.setEnabled(false);
 		delete.setEnabled(false);
-		addComponent(create, 7, 0);
-		addComponent(update, 7, 1);
-		addComponent(delete, 7, 2);
+		addComponent(create, 7, 0, 1);
+		addComponent(update, 7, 1, 1);
+		addComponent(delete, 7, 2, 1);
+		addComponent(clear, 7, 3, 1);
 	}
 	
 	/**
@@ -101,9 +104,10 @@ public class EmployeeForm extends JPanel {
 	 * @param x grid value
 	 * @param y grid value
 	 */
-	public void addComponent(JComponent component, int y, int x) {
+	public void addComponent(JComponent component, int y, int x, int width) {
 		gbc.gridx = x;
 		gbc.gridy = y;
+		gbc.gridwidth = width;
 		this.panel.add(component, this.gbc);
 	}
 	
